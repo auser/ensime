@@ -127,7 +127,7 @@ object EnsimeBuild extends Build {
       ))
   }
 
-  val log = MainLogging.defaultScreen
+  // val log = MainLogging.defaultScreen;
 
   var stage = TaskKey[Unit]("stage",
     "Copy files into staging directory for a release.")
@@ -141,7 +141,7 @@ object EnsimeBuild extends Build {
 
     delete(file(distDir))
 
-    log.info("Copying runtime environment to ./" + distDir + "....")
+    // log.info("Copying runtime environment to ./" + distDir + "....")
     createDirectories(List(
       file(distDir),
       file(distDir + "/bin"),
@@ -241,17 +241,17 @@ object EnsimeBuild extends Build {
     val shallWeTag = false
     val tagArg = if(shallWeTag){ "-s" }else{ "" }
     doSh("git tag " + tagArg + " v" + tagName +
-      " -m 'Tag for release " + modName + "'") !! (log)
+      " -m 'Tag for release " + modName + "'")// !! (log)
 
     val initialDir = new File(".")
     val archiveFile = new File(initialDir,
       modName + ".tar.gz").getCanonicalPath
     withTemporaryDirectory{ f =>
       val releaseDir = new File(f.getAbsolutePath + "/" + modName)
-      log.info("Copying ./" + distDir + " to temp directory: " + releaseDir)
-      doSh("cp -r ./" + distDir + " " + releaseDir)!!(log)
-      log.info("Compressing temp directory to " + archiveFile + "...")
-      doSh("tar -pcvzf " + archiveFile + " " + modName, Some(f)) !! (log)
+      // log.info("Copying ./" + distDir + " to temp directory: " + releaseDir)
+      doSh("cp -r ./" + distDir + " " + releaseDir) //!!(log)
+      // log.info("Compressing temp directory to " + archiveFile + "...")
+      doSh("tar -pcvzf " + archiveFile + " " + modName, Some(f))// !! (log)
       None
     }
     None
